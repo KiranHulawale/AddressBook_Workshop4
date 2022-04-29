@@ -77,7 +77,7 @@ public class AddressBookManager implements IAddressBook {
     }
 
     private void addAddressBookToFile(String firstName, String lastName, String address, String city, String state, String phoneNumber, String zip, String addressBookName) {
-        File contactsFile = new File("C:\\Users\\Sanket\\Desktop\\" + addressBookName + ".txt");
+        File contactsFile = new File("C:\\Users\\Admin\\Desktop\\" + addressBookName + ".txt");
         if (!contactsFile.exists()) {
             try {
                 contactsFile.createNewFile();
@@ -105,7 +105,7 @@ public class AddressBookManager implements IAddressBook {
     }
 
     public void showContactsFromFile(String addressBookName) {
-        Path filePath = Paths.get("C:\\Users\\Sanket\\Desktop\\" + addressBookName + ".txt");
+        Path filePath = Paths.get("C:\\Users\\Admin\\Desktop\\" + addressBookName + ".txt");
         try {
             Files.lines(filePath).map(line -> line.trim()).forEach(line -> System.out.println(line));
         } catch (IOException e) {
@@ -374,7 +374,7 @@ public class AddressBookManager implements IAddressBook {
     }
 
     public void addContactsToCSVFile(String addressBookName) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
-        Path filePath = Paths.get("C:\\Users\\Sanket\\Desktop\\" + addressBookName + ".csv");
+        Path filePath = Paths.get("C:\\Users\\Admin\\Desktop\\" + addressBookName + ".csv");
         if (Files.notExists(filePath))
             Files.createFile(filePath);
         File file = new File(String.valueOf(filePath));
@@ -400,7 +400,7 @@ public class AddressBookManager implements IAddressBook {
         CSVReader reader = null;
         try
         {
-            reader = new CSVReader(new FileReader("C:\\Users\\Sanket\\Desktop\\" + addressBookName + ".csv"));
+            reader = new CSVReader(new FileReader("C:\\Users\\Admin\\Desktop\\" + addressBookName + ".csv"));
             String [] nextLine;
             while ((nextLine = reader.readNext()) != null)
             {
@@ -416,6 +416,31 @@ public class AddressBookManager implements IAddressBook {
             e.printStackTrace();
         }
 
+    }
+    private void addContactsToJSONFile(String addressBookName) throws IOException {
+        Path filePath = Paths.get("C:\\Users\\Admin\\Desktop\\" + addressBookName + ".json");
+        Gson gson = new Gson();
+        String json = gson.toJson(contacts);
+        FileWriter writer = new FileWriter(String.valueOf(filePath));
+        writer.write(json);
+        writer.close();
+    }
+
+    public void readFromJSONFile(String addressBookName) throws FileNotFoundException {
+        Path filePath = Paths.get("C:\\Users\\Admin\\Desktop\\" + addressBookName + ".json");
+        Gson gson = new Gson();
+        BufferedReader br = new BufferedReader(new FileReader(String.valueOf(filePath)));
+        Person[] person = gson.fromJson(br, Person[].class);
+        List<Person> contactList = Arrays.asList(person);
+        for (Person contact : contactList) {
+            System.out.println("Firstname : " + contact.firstName);
+            System.out.println("Lastname : " + contact.lastName);
+            System.out.println("Address : " + contact.address);
+            System.out.println("City : " + contact.city);
+            System.out.println("State : " + contact.state);
+            System.out.println("Zip : " + contact.zip);
+            System.out.println("Phone number : " + contact.phoneNumber);
+        }
     }
 
 }
