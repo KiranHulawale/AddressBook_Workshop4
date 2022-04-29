@@ -1,88 +1,97 @@
 package com.bridgelabz;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class AddressBookMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        System.out.println("Welcome to Address Book Program");
+        AddressBookManager addressBookManager = new AddressBookManager();
         Scanner scanner = new Scanner(System.in);
-        AddressBookService contact = new AddressBookService();
-
+        String addressBookName;
         while (true) {
-            System.out.println("Please choose from below choices .");
-            System.out.println(" 1 Add Contact "
-                    + "\n 2 Edit Contact "
-                    +"\n 3 Delete Contact "
-                    + "\n 4 Display Contact "
-                    + "\n 5 Search "
-                    + "\n 6 View Person from same state or city"
-                    + "\n 7 No of person from same state or city "
-                    + "\n 8 Sort contact with basic name "
-                    + "\n 9 Sort On the basis of city,state or Zip"
-                    + "\n 10 Quit ");
-            int userChoice = scanner.nextInt();
-            switch (userChoice)
-            {
+            System.out.println("Enter address book name: ");
+            addressBookName = scanner.nextLine();
+            System.out.println("Choose:\n " +
+                    "1.Add person\n " +
+                    "2.Edit person\n " +
+                    "3.Delete person\n " +
+                    "4.Sort address book alphabetically\n " +
+                    "5.Sort address book by city, state or zip\n " +
+                    "6.View person by city or state\n " +
+                    "7.Search people in city or state\n " +
+                    "8.Number of people in a city\n " +
+                    "9.Number of people in a state\n " +
+                    "10.Add address book to file\n" +
+                    "11.Read address book from file\n" +
+                    "12.Add address book to CSV file\n" +
+                    "13.Read address book from CSV file");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
                 case 1:
-                    contact.addContact();
+                    addressBookManager.createPerson(addressBookName);
                     break;
+
                 case 2:
-                    System.out.println("Enter the Phone Number");
-                    String phoneNumber = scanner.next();
-                    boolean updated = contact.editContact(phoneNumber);
-                    if(updated)
-                    {
-                        System.out.println("Contact Updated.");
-                    }
-                    else
-                    {
-                        System.out.println("Contact not found");
-                    }
+                    addressBookManager.editPerson();
                     break;
+
                 case 3:
-                    System.out.println("Enter the Phone Number");
-                    String phoneNumberToDel = scanner.next();
-                    boolean status = contact.deleteContact(phoneNumberToDel);
-                    if(status)
-                    {
-                        System.out.println("Contact Deleted Successfully");
-                    }
-                    else
-                    {
-                        System.out.println("Contact not found");
-                    }
+                    addressBookManager.deletePerson();
                     break;
+
                 case 4:
-                    contact.displayContact();
+                    addressBookManager.sortAlphabetically();
                     break;
+
                 case 5:
-                    System.out.println("Enter the city or state which to be searched");
-                    String searchKey = scanner.next();
-                    contact.searchPerson(searchKey);
+                    addressBookManager.sortByCityStateZip();
                     break;
+
                 case 6:
-                    System.out.println("Enter the city or state which to be searched");
-                    String viewKey = scanner.next();
-                    contact.viewPerson(viewKey);
+                    addressBookManager.viewPersonByCityOrState();
                     break;
+
                 case 7:
-                    System.out.println("Enter the city or state which to be searched");
-                    String searchKeyForCount = scanner.next();
-                    int count = (int)contact.searchPerson(searchKeyForCount);
-                    System.out.println("Total Contacts are : "+count+ " in "+ searchKeyForCount);
+                    addressBookManager.searchPeopleInCityOrState();
                     break;
+
                 case 8:
-                    contact.sortContacts();
+                    addressBookManager.countByCity();
                     break;
+
                 case 9:
-                    System.out.println("How you want to sort\n1 City \n2 State \n3 Zip");
-                    int sortByWhich = scanner.nextInt();
-                    contact.sortBY(sortByWhich);
+                    addressBookManager.countByState();
+                    break;
+
+                case 10:
+                    addressBookManager.createPerson(addressBookName);
+                    break;
+
+                case 11:
+                    addressBookManager.showContactsFromFile(addressBookName);
+                    break;
+
+                case 12:
+                    addressBookManager.createPerson(addressBookName);
+                    break;
+
+                case 13:
+                    addressBookManager.readContactsFromCSVFile(addressBookName);
                     break;
 
                 default:
-                    System.out.println("You just Quit");
-                    System.exit(0);
+                    System.out.println("Invalid input");
+
             }
+
         }
+
     }
+
+
 }
